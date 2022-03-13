@@ -1,0 +1,15 @@
+# IntelliJ IDEA
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+
+# python
+.venv
+
+# Django
+*.log
+*.pyc
+__pycache__/
+db-volumes/
+db.sqlite3
+
+**/*.sqlite
