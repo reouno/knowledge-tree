@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/api_server/api_server.iml" filepath="$PROJECT_DIR$/api_server/api_server.iml" />
       <module fileurl="file://$PROJECT_DIR$/bin/bin.iml" filepath="$PROJECT_DIR$/bin/bin.iml" />
       <module fileurl="file://$PROJECT_DIR$/front/front.iml" filepath="$PROJECT_DIR$/front/front.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nginx/nginx.iml" filepath="$PROJECT_DIR$/nginx/nginx.iml" />
     </modules>
   </component>
 </project>

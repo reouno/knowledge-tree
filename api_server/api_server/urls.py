@@ -21,4 +21,5 @@ urlpatterns = [
     path('api/auth/', include('dj_rest_auth.urls')),
     re_path(r'^api/accounts/', include('api_server.apps.custom_accounts.urls')),
     re_path(r'^api/chat/', include('api_server.apps.chat.urls')),
+    re_path(r'^api/health_check/', include('api_server.apps.health_check.urls')),
 ]

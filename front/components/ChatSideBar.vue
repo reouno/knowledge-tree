@@ -1,8 +1,6 @@
 <template>
   <v-navigation-drawer
-    v-model="drawer"
-    :clipped="clipped"
-    :mini-variant="miniVariant"
+    permanent
     app
     fixed
   >
@@ -39,10 +37,6 @@ import { RoomItem } from '~/layouts/chat.vue'
 export default class ChatSideBar extends Vue {
   @Prop({required: true, default: []})
   roomItems!: RoomItem[]
-
-  drawer: boolean = false
-  clipped: boolean = false
-  miniVariant: boolean = false
 
   @Emit('click-create-room')
   click() {
