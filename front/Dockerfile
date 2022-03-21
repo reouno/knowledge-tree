@@ -6,7 +6,7 @@ ENV NUXT_ENV_BASE_URL=http://localhost
 WORKDIR /src
 
 ADD . ./
-RUN rm -rf .nuxt && rm -rf node_modules && yarn install --production
+RUN rm -rf .nuxt && rm -rf node_modules && yarn install
 RUN NUXT_ENV_BASE_URL=${NUXT_ENV_BASE_URL} yarn build
 
 ENTRYPOINT ["yarn", "start"]
