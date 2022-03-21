@@ -54,9 +54,14 @@ services:
     logging:
       <<: *default-logging
   front:
+    env_file: ./front/.env.prod
     build:
       context: ./front
       dockerfile: Dockerfile
+      args:
+        - HOST=${HOST}
+        - PORT=${PORT}
+        - NUXT_ENV_BASE_URL=${NUXT_ENV_BASE_URL}
     container_name: knowledge-tree-front-prd
     expose:
       - 3000
@@ -73,6 +78,7 @@ services:
       <<: *default-healthcheck
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - api
     volumes:

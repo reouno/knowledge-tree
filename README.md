@@ -13,8 +13,10 @@ It's useful at development.
 # Run for the production
 
 ## 1. Prepare .env
+
+### `api_server/.env`
 Create `<prj_root>/api_server/.env.prod`.
-Example of the environment variables are the followings.
+Example of environment variables are followings.
 ```dotenv
 DJANGO_SETTINGS_MODULE=api_server.settings.prod
 DJANGO_ENV=prod
@@ -30,6 +32,15 @@ SQL_PORT=5432
 DATABASE=postgres
 TIMEZONE=Asia/Tokyo
 DJANGO_LOG_LEVEL=INFO
+```
+
+### `front/.env`
+Create `<prj_root>/front/.env.prod`.
+Example of environment variables are followings.
+```dotenv
+HOST=0.0.0.0
+PORT=3000
+NUXT_ENV_BASE_URL=https://hour-domain.com
 ```
 
 ## 2. Setup
