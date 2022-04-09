@@ -4,6 +4,7 @@
       <div id="chat-history-area" class="chat-history">
         <client-only>
           <infinite-loading
+            :identifier="infiniteId"
             direction="top"
             @infinite="infiniteHandler"
           ></infinite-loading>
@@ -16,6 +17,18 @@
               <v-card-text class="py-1">
                 <p class="my-0" v-html="formatToHtml(item.message)"></p>
               </v-card-text>
+              <v-col class="ma-0 pa-0 text-right">
+                <v-chip
+                  v-if="hover"
+                >
+                  <v-btn class="mr-1" disabled fab x-small>
+                    <v-icon>mdi-pencil-outline</v-icon>
+                  </v-btn>
+                  <v-btn class="ma-0" fab x-small @click.stop="openDeleteDialog(item)">
+                    <v-icon>mdi-trash-can-outline</v-icon>
+                  </v-btn>
+                </v-chip>
+              </v-col>
             </v-card>
           </v-hover>
         </div>
@@ -46,6 +59,41 @@
           </v-row>
         </v-container>
       </v-card>
+      <v-dialog
+        v-model="deleteDialog"
+        width="500"
+      >
+        <v-card v-if="selectedTweet">
+          <v-card-title class="text-h5 grey lighten-2">
+            Delete a message
+          </v-card-title>
+
+          <v-card-text>
+            Are you sure you want to delete the message?<br/>
+            {{ selectedTweet.message.slice(0, 10) }}...
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="secondary"
+              text
+              @click="deleteDialog = false"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              color="error"
+              text
+              @click="onClickDelete(selectedTweet.id)"
+            >
+              Delete
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-main>
 </template>
@@ -77,6 +125,9 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
   room: Room | null = null
   user: User | null = null
   keyDownCode: number = 0
+  deleteDialog: boolean = false
+  infiniteId = +new Date() // Date as timestamp
+  selectedTweet: Tweet | null = null
 
   get roomId(): string {
     return this.$route.params.id
@@ -172,12 +223,32 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
     this.message = ''
   }
 
+  openDeleteDialog(item: Tweet) {
+    this.selectedTweet = item
+    this.deleteDialog = true
+  }
+
+  onClickDelete(itemId: string) {
+    this.tweetRepo.delete(itemId)
+    this.selectedTweet = null
+    this.deleteDialog = false
+    this.resetInfiniteLoading()
+  }
+
   formatToHtml(s: string): string {
     return s
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/\n/g, '<br />')
+  }
+
+  resetInfiniteLoading() {
+    this.nextPage = 1
+    this.items = []
+
+    // ref: https://peachscript.github.io/vue-infinite-loading/guide/use-with-filter-or-tabs.html
+    this.infiniteId += 1
   }
 }
 </script>
