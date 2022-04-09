@@ -32,6 +32,7 @@ DJANGO_ENV=prod
 DEBUG=0
 SECRET_KEY=gkj36hk34543gi54
 DJANGO_ALLOWED_HOSTS=https://your-host1.com,https://your-host2.com
+CSRF_TRUSTED_ORIGINS=https://your-host1.com,https://your-host2.com
 SQL_ENGINE=django.db.backends.postgresql
 SQL_DATABASE=db_name
 SQL_USER=db_user_name
