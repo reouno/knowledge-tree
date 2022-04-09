@@ -13,3 +13,10 @@ db-volumes/
 db.sqlite3
 
 **/*.sqlite
+
+.env
+.env.*
+
+# SSL Certificates
+app.conf
+nginx/data/certbot/

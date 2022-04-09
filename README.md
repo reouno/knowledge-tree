@@ -12,6 +12,15 @@ It's useful at development.
 
 # Run for the production
 
+## 0. Prepare for SSL
+```shell
+cp nginx/data/nginx/app.conf.ini nginx/data/nginx/app.conf
+```
+After that, change <your.domain> to your domain.
+
+Create certificate following [this site](https://mindsers.blog/post/https-using-nginx-certbot-docker/).
+
+
 ## 1. Prepare .env
 
 ### `api_server/.env`

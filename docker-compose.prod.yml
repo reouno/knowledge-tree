@@ -82,11 +82,18 @@ services:
     depends_on:
       - api
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/data/nginx:/etc/nginx/conf.d/:ro
+      - ./nginx/data/certbot/conf:/etc/letsencrypt:ro
+      - ./nginx/data/certbot/www:/var/www/certbot/:ro
       - static_volume_prd:/home/app/web/staticfiles
     restart: always
     logging:
       <<: *default-logging
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./nginx/data/certbot/conf:/etc/letsencrypt:rw
+      - ./nginx/data/certbot/www:/var/www/certbot/:rw
   autoheal:
     restart: always
     image: willfarrell/autoheal

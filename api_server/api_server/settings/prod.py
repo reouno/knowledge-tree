@@ -8,6 +8,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='a')
 # can write with comma seperated format in .env file if multiple hosts
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', default='*').split(',')
 
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', default='*').split(',')
+
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
