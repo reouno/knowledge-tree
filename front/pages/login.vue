@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" justify="center">
+  <v-row v-if="notLogedIn" align="center" justify="center">
     <v-col cols="12" md="6" sm="8">
       <v-card>
         <v-card-title> ログイン</v-card-title>
@@ -25,20 +25,23 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class Login extends Vue {
+  notLogedIn: boolean = false
   email: string = ''
   password: string = ''
   show1: boolean = false
 
-  // baseEndpoint = '/api/accounts'
+  baseEndpoint = '/api/accounts'
 
-  // async created() {
-  //   if (process.client) {
-  //     await this.$axios.get(`${this.baseEndpoint}/set_csrf/`)
-  //     this.$axios.get(`${this.baseEndpoint}/me/`).then(() => {
-  //       this.$router.push('/')
-  //     })
-  //   }
-  // }
+  async created() {
+    if (process.client) {
+      await this.$axios.get(`${this.baseEndpoint}/set_csrf/`)
+      this.$axios.get(`${this.baseEndpoint}/me/`).then(() => {
+        this.$router.push('/')
+      }).catch(() => {
+        this.notLogedIn = true
+      })
+    }
+  }
 
   async login() {
     await this.$auth
