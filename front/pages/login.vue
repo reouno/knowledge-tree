@@ -1,8 +1,8 @@
 <template>
-  <v-row v-if="notLogedIn" align="center" justify="center">
+  <v-row v-if="!$auth.loggedIn" align="center" justify="center">
     <v-col cols="12" md="6" sm="8">
       <v-card>
-        <v-card-title> ログイン</v-card-title>
+        <v-card-title>Sign In</v-card-title>
         <v-card-text>
           <v-text-field v-model="email" label="email" required></v-text-field>
           <v-text-field
@@ -12,8 +12,9 @@
             label="Password"
             name="input-10-1"
             @click:append="show1 = !show1"
+            @keydown.enter.exact="login"
           ></v-text-field>
-          <v-btn @click="login">ログイン</v-btn>
+          <v-btn @click="login">Sign In</v-btn>
         </v-card-text>
       </v-card>
     </v-col>
@@ -25,31 +26,17 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class Login extends Vue {
-  notLogedIn: boolean = false
   email: string = ''
   password: string = ''
   show1: boolean = false
 
-  baseEndpoint = '/api/accounts'
-
-  async created() {
-    if (process.client) {
-      await this.$axios.get(`${this.baseEndpoint}/set_csrf/`)
-      this.$axios.get(`${this.baseEndpoint}/me/`).then(() => {
-        this.$router.push('/')
-      }).catch(() => {
-        this.notLogedIn = true
-      })
-    }
-  }
-
   async login() {
     await this.$auth
       .loginWith('cookie', {
-        data: { email: this.email, password: this.password },
+        data: {email: this.email, password: this.password},
       })
       .catch((reason) => {
-        alert(`ログイン失敗: ${reason}`)
+        alert(`Failed to sign in: ${reason}`)
       })
   }
 }
