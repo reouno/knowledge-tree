@@ -38,6 +38,8 @@ export default class Login extends Vue {
     if (process.client) {
       if (!this.$auth.loggedIn) {
         this.$auth.reset()
+      } else {
+        this.$router.push('/chat')
       }
       // await this.$axios.get(`${this.baseEndpoint}/set_csrf/`)
       // this.$axios.get(`${this.baseEndpoint}/me/`).then((response) => {
