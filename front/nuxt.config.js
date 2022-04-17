@@ -1,8 +1,11 @@
+import logger from 'connect-logger'
 import colors from 'vuetify/es5/util/colors'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
 export default {
+  ssr: true, // default
+  target: 'server', // default
   dev: isDev,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -28,6 +31,8 @@ export default {
     '~/plugins/axios',
     { src: '~/plugins/infinite-loading', ssr: false },
   ],
+
+  serverMiddleware: [logger({ format: '%date %status %method %url (%time)' })],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
