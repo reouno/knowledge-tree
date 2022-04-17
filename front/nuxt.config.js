@@ -30,6 +30,7 @@ export default {
   plugins: [
     '~/plugins/axios',
     { src: '~/plugins/infinite-loading', ssr: false },
+    { src: '~/plugins/vuex-persist', ssr: false },
   ],
 
   serverMiddleware: [logger({ format: '%date %status %method %url (%time)' })],
