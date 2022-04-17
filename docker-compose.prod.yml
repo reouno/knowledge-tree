@@ -37,7 +37,7 @@ services:
       context: ./api_server
       dockerfile: Dockerfile.prod
     container_name: knowledge-tree-api-prd
-    command: gunicorn --bind 0.0.0.0:8000 --workers 1 --threads 4 api_server.wsgi:application
+    command: gunicorn --bind 0.0.0.0:8000 --workers 1 --threads 4 --capture-output --log-level info --access-logfile '-' --error-logfile '-' api_server.wsgi:application
     healthcheck:
       test: curl --fail http://localhost:8000/api/health_check/health_check/ || exit 1
       <<: *default-healthcheck
