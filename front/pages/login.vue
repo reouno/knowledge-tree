@@ -30,6 +30,23 @@ export default class Login extends Vue {
   password: string = ''
   show1: boolean = false
 
+  baseEndpoint = '/api/accounts'
+
+  async created() {
+    // Force re-fetch user and set cookies and vuex state
+    // because auto-fetch does not work in some cases.
+    if (process.client) {
+      await this.$axios.get(`${this.baseEndpoint}/set_csrf/`)
+      this.$axios.get(`${this.baseEndpoint}/me/`).then((response) => {
+        this.$auth.setUser(response.data)
+        const prefix = 'auth._token'
+        this.$auth.$storage.setCookie('.cookie', 'true', { prefix })
+        this.$auth.$storage.setCookie('_expiration.cookie', 'false', {prefix})
+        this.$auth.$storage.setState('loggedIn', true)
+      })
+    }
+  }
+
   async login() {
     await this.$auth
       .loginWith('cookie', {
