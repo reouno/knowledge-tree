@@ -1,13 +1,14 @@
 <template>
   <v-app>
     <chat-side-bar
+      v-model="drawer"
       :room-items="roomItems"
       @click-create-room="showCreateRoomDialog = true"
     ></chat-side-bar>
-    <chat-room-header v-if="roomId" :room="current"></chat-room-header>
+    <chat-room-header v-if="roomId" :room="current" @open-side-bar="openSideBar"></chat-room-header>
     <create-room
-      :show-dialog="showCreateRoomDialog"
       :room-repo="roomRepo"
+      :show-dialog="showCreateRoomDialog"
       @close-dialog="closeCreateRoomDialog()"
       @room-created="onRoomCreated"
     ></create-room>
@@ -33,6 +34,7 @@ export interface RoomItem {
   components: {CreateRoom, ChatRoomHeader, ChatSideBar},
 })
 export default class ChatLayout extends Vue {
+  drawer: boolean | null = null
   roomItems: RoomItem[] = []
   showCreateRoomDialog: boolean = false
 
@@ -79,6 +81,10 @@ export default class ChatLayout extends Vue {
     }
 
     this.$router.push(roomItem.to)
+  }
+
+  openSideBar() {
+    this.drawer = true
   }
 }
 </script>
