@@ -6,7 +6,9 @@
       app
       fixed
     >
-      <v-list>
+      <v-list
+        class="overflow-y-auto"
+      >
         <v-list-item>
           <v-spacer></v-spacer>
           <v-btn @click="click">
