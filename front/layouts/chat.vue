@@ -4,6 +4,7 @@
       v-model="drawer"
       :room-items="roomItems"
       @click-create-room="showCreateRoomDialog = true"
+      @click-logout="logout"
     ></chat-side-bar>
     <chat-room-header v-if="roomId" :room="current" @open-side-bar="openSideBar"></chat-room-header>
     <create-room
@@ -85,6 +86,11 @@ export default class ChatLayout extends Vue {
 
   openSideBar() {
     this.drawer = true
+  }
+
+  async logout() {
+    await this.$auth.logout()
+    alert('Signed out!')
   }
 }
 </script>

@@ -6,15 +6,21 @@
       app
       fixed
     >
-      <v-row>
-        <v-col>
-          <v-spacer></v-spacer>
-          <v-btn @click="click">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-container class="fill-height">
+      <v-container style="padding-bottom: 0">
+        <v-row>
+          <v-col class="text-left">
+            <v-btn fab small @click="onClickLogout">
+              <v-icon>mdi-logout</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col class="text-right">
+            <v-btn fab small @click="click">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container class="chatroom-list-height">
         <div class="inherit-hw">
           <v-list class="scrollable-list">
             <v-list-item
@@ -67,6 +73,11 @@ export default class ChatSideBar extends Vue {
   public input(_value: boolean | null) {
   }
 
+  @Emit('click-logout')
+  onClickLogout() {
+    // do nothing
+  }
+
 }
 </script>
 
@@ -74,6 +85,21 @@ export default class ChatSideBar extends Vue {
 /* Disable scrolling navigation drawer */
 ::v-deep .v-navigation-drawer__content { /* stylelint-disable-line selector-class-pattern */
   overflow: hidden
+}
+
+/* For mobile */
+@media screen and (max-width: 1024px) {
+  .chatroom-list-height {
+    height: 100%;
+    max-height: calc(100% - 220px);
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .chatroom-list-height {
+    height: 100%;
+    max-height: calc(100% - 120px);
+  }
 }
 
 .inherit-hw {
@@ -84,7 +110,7 @@ export default class ChatSideBar extends Vue {
 /* Enable scrolling only in chatroom list area */
 .scrollable-list {
   padding: 0;
-  height: calc(100% - 70px);
+  height: inherit;
 
   /* -webkit-overflow-scrolling: auto; */
   overflow-y: scroll;

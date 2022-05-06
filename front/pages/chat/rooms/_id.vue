@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container class="chat-container">
+    <v-container class="chat-container-height chat-container">
       <div id="chat-history-area" class="chat-history">
         <client-only>
           <infinite-loading
@@ -59,6 +59,7 @@
           </v-row>
         </v-container>
       </v-card>
+      <div class="bottom-space"><!-- Bottom space for iOS --></div>
       <v-dialog
         v-model="deleteDialog"
         width="500"
@@ -261,8 +262,29 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
 </script>
 
 <style scoped>
+/* For mobile */
+@media screen and (max-width: 1024px) {
+  .chat-container-height {
+    height: calc(100vh - 64px);
+  }
+
+  /* For iOS */
+  .bottom-space {
+    height: 100px;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .chat-container-height {
+    height: calc(100vh - 64px);
+  }
+
+  .bottom-space {
+    height: 0;
+  }
+}
+
 .chat-container {
-  height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
   font-size: 0.9rem;

@@ -2,7 +2,7 @@
   <v-app-bar :clipped-left="clipped" app fixed>
     <template v-if="room">
       <v-app-bar-nav-icon
-        v-show="$vuetify.breakpoint.mobile"
+        v-show="true"
         @click.stop="onClickOpenSideBar"
       ></v-app-bar-nav-icon>
       <v-toolbar-title v-text="room.label"/>
