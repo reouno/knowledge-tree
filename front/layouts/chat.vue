@@ -90,6 +90,7 @@ export default class ChatLayout extends Vue {
 </script>
 
 <style>
+/* Disable scrolling body */
 html, body {
   margin: 0;
   height: 100%;
