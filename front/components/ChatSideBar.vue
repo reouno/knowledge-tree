@@ -7,7 +7,7 @@
       fixed
     >
       <v-list
-        class="overflow-y-auto"
+        class="scrollable-list"
       >
         <v-list-item>
           <v-spacer></v-spacer>
@@ -64,3 +64,10 @@ export default class ChatSideBar extends Vue {
 
 }
 </script>
+
+<style lang="css" scoped>
+.scrollable-list {
+  -webkit-overflow-scrolling: auto;
+  overflow-y: auto;
+}
+</style>
