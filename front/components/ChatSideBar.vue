@@ -32,7 +32,7 @@
                     <v-icon>mdi-chat-processing-outline</v-icon>
                   </v-col>
                   <v-col class="pl-1 pr-0">{{ shrink(item.room.label) }}</v-col>
-                  <v-col cols="2" class="text-right px-1">
+                  <v-col cols="2" class="text-right px-2">
                     <v-btn icon x-small @click="onClickEditRoom(item.room)">
                       <v-icon>mdi-dots-vertical</v-icon>
                     </v-btn>
