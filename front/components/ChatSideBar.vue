@@ -8,10 +8,8 @@
     >
       <v-container style="padding-bottom: 0">
         <v-row>
-          <v-col class="text-left">
-            <v-btn fab small @click="onClickLogout">
-              <v-icon>mdi-logout</v-icon>
-            </v-btn>
+          <v-col>
+            <v-app-bar-nav-icon @click.stop="input(drawer = !drawer)"></v-app-bar-nav-icon>
           </v-col>
           <v-col class="text-right">
             <v-btn fab small @click="click">
@@ -39,6 +37,15 @@
             </v-list-item>
           </v-list>
         </div>
+      </v-container>
+      <v-container>
+        <v-row>
+          <v-col>
+            <v-btn fab small @click="onClickLogout">
+              <v-icon>mdi-logout</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-container>
     </v-navigation-drawer>
   </div>
@@ -87,15 +94,23 @@ export default class ChatSideBar extends Vue {
   overflow: hidden
 }
 
-/* For mobile */
-@media screen and (max-width: 1024px) {
+/* For iPhone and iPad portrait */
+@media screen and (max-width: 820px) {
   .chatroom-list-height {
     height: 100%;
     max-height: calc(100% - 220px);
   }
 }
 
-@media screen and (min-width: 1025px) {
+/* For iPad in landscape */
+@media screen and (min-width: 821px) and (max-width: 1180px) and (max-height: 820px) {
+  .chatroom-list-height {
+    height: 100%;
+    max-height: calc(100% - 220px);
+  }
+}
+
+@media screen and (min-width: 821px) and (min-height: 821px) {
   .chatroom-list-height {
     height: 100%;
     max-height: calc(100% - 120px);
