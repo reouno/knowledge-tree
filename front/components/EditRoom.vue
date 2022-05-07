@@ -1,10 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog
-      v-model="showDialog"
-      max-width="600px"
-      persistent
-    >
+    <v-dialog v-model="showDialog" max-width="600px" persistent>
       <v-card>
         <v-card-title>
           <v-icon>mdi-chat</v-icon>
@@ -14,19 +10,11 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field
-                  v-model="label"
-                  label="Room name"
-                  required
-                >
+                <v-text-field v-model="label" label="Room name" required>
                 </v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-textarea
-                  v-model="description"
-                  label="description"
-                  required
-                >
+                <v-textarea v-model="description" label="description" required>
                 </v-textarea>
               </v-col>
             </v-row>
@@ -42,12 +30,7 @@
             Delete
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn
-            text
-            @click="close()"
-          >
-            Cancel
-          </v-btn>
+          <v-btn text @click="close()"> Cancel </v-btn>
           <v-btn
             v-if="forCreate"
             :disabled="!isEnteredRequiredFields()"
@@ -59,7 +42,7 @@
           </v-btn>
           <v-btn
             v-else
-            :disabled="!isEnteredRequiredFields()"
+            :disabled="!hasChanged()"
             color="primary"
             text
             @click="update()"
@@ -87,28 +70,15 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            text
-            @click="showDeleteConfirmDialog = false"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-            color="error"
-            text
-            @click="logicalDelete"
-          >
-            Delete
-          </v-btn>
+          <v-btn text @click="showDeleteConfirmDialog = false"> Cancel </v-btn>
+          <v-btn color="error" text @click="logicalDelete"> Delete </v-btn>
         </v-card-actions>
       </v-card>
-
     </v-dialog>
   </v-row>
 </template>
 
 <script lang="ts">
-
 import { Component, Emit, Prop, Vue, Watch } from 'nuxt-property-decorator'
 import { Room } from '~/models/room'
 import { RoomRepository } from '~/repository/room'
@@ -120,13 +90,13 @@ export default class CreateRoom extends Vue {
   showDeleteConfirmDialog: boolean = false
 
   // `null` means creating new room
-  @Prop({required: true, default: null})
+  @Prop({ required: true, default: null })
   current!: Room | null
 
-  @Prop({required: true, default: false})
+  @Prop({ required: true, default: false })
   showDialog!: boolean
 
-  @Prop({required: true})
+  @Prop({ required: true })
   roomRepo!: RoomRepository
 
   get forCreate(): boolean {
@@ -138,9 +108,9 @@ export default class CreateRoom extends Vue {
     if (!this.forCreate) {
       this.label = this.current!.label
       this.description = this.current!.description
+    } else {
+      this.clearData()
     }
-
-    this.clearData()
   }
 
   @Emit('close-dialog')
@@ -163,12 +133,15 @@ export default class CreateRoom extends Vue {
 
   async create() {
     const newRoom = this.newRoom()
-    await this.roomRepo.create(newRoom).then((room) => {
-      this.clearData()
-      this.roomCreated(room)
-    }).catch((reason => {
-      alert(`Failed to create room "${newRoom.label}": ${reason}`)
-    }))
+    await this.roomRepo
+      .create(newRoom)
+      .then((room) => {
+        this.clearData()
+        this.roomCreated(room)
+      })
+      .catch((reason) => {
+        alert(`Failed to create room "${newRoom.label}": ${reason}`)
+      })
   }
 
   async update() {
@@ -178,12 +151,15 @@ export default class CreateRoom extends Vue {
         description: this.description.trim(),
       }
 
-      await this.roomRepo.patch(this.current!.id, updated).then((room) => {
-        this.clearData()
-        this.roomUpdated(room)
-      }).catch((reason => {
-        alert(`Failed to update room "${updated.label}": ${reason}`)
-      }))
+      await this.roomRepo
+        .patch(this.current!.id, updated)
+        .then((room) => {
+          this.clearData()
+          this.roomUpdated(room)
+        })
+        .catch((reason) => {
+          alert(`Failed to update room "${updated.label}": ${reason}`)
+        })
     }
   }
 
@@ -191,12 +167,15 @@ export default class CreateRoom extends Vue {
     if (!this.forCreate) {
       const current = this.current! // must exist
 
-      await this.roomRepo.logicalDelete(current.id).then((_response) => {
-        this.clearData()
-        this.roomDeleted(current)
-      }).catch((reason => {
-        alert(`Failed to delete room "${current.label}": ${reason}`)
-      }))
+      await this.roomRepo
+        .logicalDelete(current.id)
+        .then((_response) => {
+          this.clearData()
+          this.roomDeleted(current)
+        })
+        .catch((reason) => {
+          alert(`Failed to delete room "${current.label}": ${reason}`)
+        })
       this.showDeleteConfirmDialog = false
     }
   }
@@ -223,6 +202,14 @@ export default class CreateRoom extends Vue {
 
   isEnteredRequiredFields() {
     return this.label.trim().length !== 0
+  }
+
+  hasChanged() {
+    return (
+      this.isEnteredRequiredFields() &&
+      (this.label.trim() !== this.current?.label ||
+        this.description.trim() !== this.current.description)
+    )
   }
 }
 </script>
