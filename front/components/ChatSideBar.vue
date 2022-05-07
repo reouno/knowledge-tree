@@ -116,7 +116,7 @@ export default class ChatSideBar extends Vue {
   }
 }
 
-@media screen and (min-width: 821px) and (min-height: 821px) {
+@media screen and (min-width: 821px) and (min-height: 821px), screen and (min-width: 1181px) {
   .chatroom-list-height {
     height: 100%;
     max-height: calc(100% - 120px);
