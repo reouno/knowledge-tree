@@ -115,8 +115,9 @@ export default class ChatLayout extends Vue {
   }
 
   async logout() {
-    await this.$auth.logout()
-    alert('Signed out!')
+    if (window.confirm('Sign out?')) {
+      await this.$auth.logout()
+    }
   }
 }
 </script>
