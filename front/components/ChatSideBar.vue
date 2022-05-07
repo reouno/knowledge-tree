@@ -8,9 +8,6 @@
     >
       <v-container style="padding-bottom: 0">
         <v-row>
-          <v-col>
-            <v-app-bar-nav-icon @click.stop="input(drawer = !drawer)"></v-app-bar-nav-icon>
-          </v-col>
           <v-col class="text-right">
             <v-btn fab small @click="click">
               <v-icon>mdi-plus</v-icon>
@@ -33,6 +30,9 @@
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title v-text="item.room.label"/>
+                <v-btn @click="onClickEditRoom(item.room)">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -54,6 +54,7 @@
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from 'nuxt-property-decorator'
 import { RoomItem } from '~/layouts/chat.vue'
+import { Room } from '~/models/room'
 
 @Component
 export default class ChatSideBar extends Vue {
@@ -73,6 +74,11 @@ export default class ChatSideBar extends Vue {
 
   @Emit('click-create-room')
   click() {
+    // do nothing
+  }
+
+  @Emit('click-edit-room')
+  onClickEditRoom(_room: Room) {
     // do nothing
   }
 

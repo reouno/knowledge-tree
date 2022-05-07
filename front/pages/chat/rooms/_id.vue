@@ -276,6 +276,12 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
   }
 }
 
+@media screen and (min-width: 821px) and (min-height: 821px) {
+  .bottom-space {
+    height: 10px;
+  }
+}
+
 .chat-container {
   height: calc(100vh - 64px);
   display: flex;

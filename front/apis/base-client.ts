@@ -13,6 +13,7 @@ export interface EntityDto {
 export interface RetrieveEditApi<T> {
   get: (id: string) => Promise<T>
   put: (id: string, data: T) => Promise<T>
+  patch: (id: string, data: any) => Promise<T>
   delete: (id: string) => Promise<void>
 }
 
@@ -64,6 +65,18 @@ export class CreateRetrieveEditApiBase<T> implements CreateRetrieveEditApi<T> {
       })
       .catch((err) => {
         Logger.error(`Failed to update ${this.resourceName}(ID=${id})`, err)
+        throw err
+      })
+  }
+
+  patch(id: string, data: any): Promise<T> {
+    return this.$axios
+      .patch(`${this.basePath}/${this.endpoint}/${id}/`, data)
+      .then((response) => {
+        return response.data
+      })
+      .catch((err) => {
+        Logger.error(`Failed to patch ${this.resourceName}(ID=${id})`, err)
         throw err
       })
   }

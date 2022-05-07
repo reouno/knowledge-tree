@@ -20,6 +20,19 @@ class RoomViewSet(ModelViewSet):
     serializer_class = RoomSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        """Filter by `is_deleted` flag"""
+        queryset = Room.objects.all()
+        is_deleted_query = self.request.query_params.get('is_deleted')
+        if is_deleted_query == 'only':
+            queryset = queryset.filter(is_deleted=True)
+        elif is_deleted_query == 'all':
+            pass
+        else:
+            queryset = queryset.filter(is_deleted=False)
+
+        return queryset
+
 
 class TweetViewSet(ModelViewSet):
     """Tweet view set"""

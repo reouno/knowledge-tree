@@ -10,6 +10,10 @@ export class RoomRepository extends CrudRepositoryBase<Room, RoomDto> {
   protected get resourceName(): string {
     return 'room'
   }
+
+  logicalDelete(id: string): Promise<Room> {
+    return this.patch(id, { is_deleted: true })
+  }
 }
 
 const convertDtoToRoom = (raw: RoomDto): Room => {

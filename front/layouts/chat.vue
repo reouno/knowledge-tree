@@ -3,16 +3,20 @@
     <chat-side-bar
       v-model="drawer"
       :room-items="roomItems"
-      @click-create-room="showCreateRoomDialog = true"
+      @click-create-room="onClickCreateRoom"
+      @click-edit-room="onClickEditRoom"
       @click-logout="logout"
     ></chat-side-bar>
     <chat-room-header v-if="roomId" :room="current" @open-side-bar="openSideBar"></chat-room-header>
-    <create-room
+    <edit-room
+      :current="selectedRoom"
       :room-repo="roomRepo"
-      :show-dialog="showCreateRoomDialog"
+      :show-dialog="showEditRoomDialog"
       @close-dialog="closeCreateRoomDialog()"
       @room-created="onRoomCreated"
-    ></create-room>
+      @room-updated="onRoomUpdated"
+      @room-deleted="onRoomDeleted"
+    ></edit-room>
     <Nuxt/>
   </v-app>
 </template>
@@ -24,7 +28,7 @@ import { RoomRepository } from '~/repository/room'
 import { RoomApi } from '~/apis/room'
 import { Room } from '~/models/room'
 import ChatRoomHeader from '~/components/ChatRoomHeader.vue'
-import CreateRoom from '~/components/CreateRoom.vue'
+import EditRoom from '~/components/EditRoom.vue'
 
 export interface RoomItem {
   room: Room
@@ -32,12 +36,17 @@ export interface RoomItem {
 }
 
 @Component({
-  components: {CreateRoom, ChatRoomHeader, ChatSideBar},
+  components: {EditRoom, ChatRoomHeader, ChatSideBar},
 })
 export default class ChatLayout extends Vue {
   drawer: boolean | null = null
   roomItems: RoomItem[] = []
-  showCreateRoomDialog: boolean = false
+  showEditRoomDialog: boolean = false
+  selectedRoom: Room | null = null
+
+  created() {
+    this.fetchRooms()
+  }
 
   get roomRepo(): RoomRepository {
     return RoomRepository.create(RoomApi.create(this.$axios))
@@ -53,10 +62,6 @@ export default class ChatLayout extends Vue {
     return this.roomItems.find((item) => item.room.id === this.roomId)?.room || null
   }
 
-  created() {
-    this.fetchRooms()
-  }
-
   fetchRooms() {
     return this.roomRepo.list().then((rooms) => {
       this.roomItems = rooms.map((room) => {
@@ -69,11 +74,21 @@ export default class ChatLayout extends Vue {
   }
 
   closeCreateRoomDialog() {
-    this.showCreateRoomDialog = false
+    this.showEditRoomDialog = false
+  }
+
+  onClickCreateRoom() {
+    this.selectedRoom = null
+    this.showEditRoomDialog = true
+  }
+
+  onClickEditRoom(room: Room) {
+    this.selectedRoom = room
+    this.showEditRoomDialog = true
   }
 
   async onRoomCreated(room: Room) {
-    this.showCreateRoomDialog = false
+    this.showEditRoomDialog = false
     await this.fetchRooms()
 
     const roomItem = this.roomItems.find((elem) => elem.room.id === room.id)
@@ -82,6 +97,17 @@ export default class ChatLayout extends Vue {
     }
 
     this.$router.push(roomItem.to)
+  }
+
+  async onRoomUpdated(_room: Room) {
+    this.showEditRoomDialog = false
+    await this.fetchRooms()
+  }
+
+  async onRoomDeleted(_room: Room) {
+    this.showEditRoomDialog = false
+    await this.fetchRooms()
+    this.$router.push('/chat')
   }
 
   openSideBar() {

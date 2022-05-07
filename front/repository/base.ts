@@ -28,6 +28,10 @@ export class RetrieveEditRepositoryBase<ModelT, DtoT>
     return this.apiClient.put(id, this.toDto(data)).then(this.fromDto)
   }
 
+  patch(id: string, data: any): Promise<ModelT> {
+    return this.apiClient.patch(id, data).then(this.fromDto)
+  }
+
   delete(id: string): Promise<void> {
     return this.apiClient.delete(id)
   }
