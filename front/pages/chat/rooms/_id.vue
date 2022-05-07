@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container class="chat-container-height chat-container">
+    <v-container class="adjusted-chat-container-height chat-container">
       <div id="chat-history-area" class="chat-history">
         <client-only>
           <infinite-loading
@@ -262,29 +262,26 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
 </script>
 
 <style scoped>
-/* For mobile */
-@media screen and (max-width: 1024px) {
-  .chat-container-height {
-    height: calc(100vh - 64px);
-  }
-
-  /* For iOS */
+/* For iPhone and iPad in portrait */
+@media screen and (max-width: 820px) {
   .bottom-space {
     height: 100px;
   }
 }
 
-@media screen and (min-width: 1025px) {
-  .chat-container-height {
-    height: calc(100vh - 64px);
+/* For iPad in landscape */
+@media screen and (min-width: 821px) and (max-width: 1180px) and (max-height: 820px) {
+  .adjusted-chat-container-height {
+    padding-top: 70px;
   }
 
   .bottom-space {
-    height: 0;
+    height: 100px;
   }
 }
 
 .chat-container {
+  height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
   font-size: 0.9rem;
