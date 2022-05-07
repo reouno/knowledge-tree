@@ -24,15 +24,20 @@
               :to="item.to"
               exact
               router
+              class="pl-0"
             >
-              <v-list-item-action>
-                <v-icon>mdi-chat-processing-outline</v-icon>
-              </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title v-text="item.room.label"/>
-                <v-btn @click="onClickEditRoom(item.room)">
-                  <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>
+                <v-row>
+                  <v-col cols="2">
+                    <v-icon>mdi-chat-processing-outline</v-icon>
+                  </v-col>
+                  <v-col class="pl-1 pr-0">{{ shrink(item.room.label) }}</v-col>
+                  <v-col cols="2" class="text-right px-1">
+                    <v-btn icon x-small @click="onClickEditRoom(item.room)">
+                      <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -91,6 +96,11 @@ export default class ChatSideBar extends Vue {
     // do nothing
   }
 
+  private shrink(s: string): string {
+    if (s.length <= 14) return s
+
+    return s.slice(0, 7) + ' … ' + s.slice(-7)
+  }
 }
 </script>
 
