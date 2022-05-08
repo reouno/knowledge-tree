@@ -11,6 +11,10 @@ export class RoomRepository extends CrudRepositoryBase<Room, RoomDto> {
     return 'room'
   }
 
+  listWithActiveOrder(): Promise<Room[]> {
+    return this.list({ order_by: 'activity' })
+  }
+
   logicalDelete(id: string): Promise<Room> {
     return this.patch(id, { is_deleted: true })
   }

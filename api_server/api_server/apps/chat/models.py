@@ -1,6 +1,7 @@
+"""model definitions of chat app"""
 from django.db import models
+from django.utils import timezone
 
-# Create your models here.
 from api_server.apps.custom_accounts.models import CustomUser
 from api_server.lib.models.base import BaseModelWithUlid
 
@@ -12,6 +13,7 @@ class Room(BaseModelWithUlid):
     description = models.TextField(default='', null=True, blank=True)
     is_public = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
+    last_active_at = models.DateTimeField(default=timezone.now, blank=True)
 
 
 class Tweet(BaseModelWithUlid):

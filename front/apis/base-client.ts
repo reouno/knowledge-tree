@@ -107,7 +107,9 @@ export class CrudApiBase<T>
 {
   list(queries: any = {}): Promise<T[]> {
     return this.$axios
-      .get(`${this.basePath}/${this.endpoint}/`, queries)
+      .get(`${this.basePath}/${this.endpoint}/`, {
+        params: queries,
+      })
       .then((response) => {
         return response.data
       })

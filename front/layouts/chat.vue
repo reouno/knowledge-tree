@@ -63,7 +63,7 @@ export default class ChatLayout extends Vue {
   }
 
   fetchRooms() {
-    return this.roomRepo.list().then((rooms) => {
+    return this.roomRepo.listWithActiveOrder().then((rooms) => {
       this.roomItems = rooms.map((room) => {
         return {
           room,
