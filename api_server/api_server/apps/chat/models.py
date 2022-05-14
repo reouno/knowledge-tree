@@ -21,3 +21,13 @@ class Tweet(BaseModelWithUlid):
     user = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
     room = models.ForeignKey(to=Room, on_delete=models.CASCADE)
     message = models.CharField(max_length=1000, default='')
+
+    # score is the importance of tweet set by user
+    score = models.IntegerField(default=0, blank=True)
+
+
+class Mark(BaseModelWithUlid):
+    """Marks to tweet"""
+    tweet = models.ForeignKey(to=Tweet, on_delete=models.CASCADE, related_name='marks')
+    label = models.CharField(max_length=20)
+    count = models.PositiveIntegerField(default=0, blank=True)

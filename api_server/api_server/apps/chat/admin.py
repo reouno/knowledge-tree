@@ -12,6 +12,7 @@ class RoomAdmin(admin.ModelAdmin):
 
 model_list = [
     models.Tweet,
+    models.Mark,
 ]
 
 admin.site.register(models.Room, RoomAdmin)

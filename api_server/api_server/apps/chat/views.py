@@ -8,8 +8,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from api_server.apps.chat.models import Room, Tweet
-from api_server.apps.chat.serializers import RoomSerializer, TweetSerializer
+from api_server.apps.chat.models import Room, Tweet, Mark
+from api_server.apps.chat.serializers import RoomSerializer, TweetSerializer, MarkSerializer
 
 
 class StandardPageNumberPagination(PageNumberPagination):
@@ -88,3 +88,22 @@ class TweetViewSet(ModelViewSet):
             return Tweet.objects.all().order_by(order_key)
 
         return Tweet.objects.filter(room=room_id).order_by(order_key)
+
+
+class MarkViewSet(ModelViewSet):
+    """Mark view set"""
+    queryset = Mark.objects.all()
+    serializer_class = MarkSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = StandardPageNumberPagination
+
+    def get_queryset(self):
+        """Fileter by tweet ID specified with query"""
+        queryset = Mark.objects.all()
+
+        tweet_id = self.request.query_params.get('tweet_id')
+
+        if tweet_id is not None:
+            queryset = queryset.filter(tweet=tweet_id)
+
+        return queryset

@@ -17,10 +17,23 @@
               <v-card-text class="py-1">
                 <p class="my-0" v-html="formatToHtmlStr(item.message)"></p>
               </v-card-text>
-              <v-col class="ma-0 pa-0 text-right">
+              <v-col class="ma-0 pa-0 tip-width">
+                <v-btn
+                  v-for="(mark, mIdx) in item.marks"
+                  :key="mIdx"
+                  class="emoji-icon"
+                  fab
+                  x-small
+                  @click.stop="deleteMark(mark.id, item.id)"
+                >{{ toEmojiIcon(mark.label) }}
+                </v-btn>
                 <v-chip
                   v-if="hover"
+                  class="ml-4"
                 >
+                  <v-btn class="mr-1" fab x-small @click.stop="openEmojiDialog(item.id)">
+                    <v-icon>mdi-emoticon-happy-outline</v-icon>
+                  </v-btn>
                   <v-btn class="mr-1" disabled fab x-small>
                     <v-icon>mdi-pencil-outline</v-icon>
                   </v-btn>
@@ -95,6 +108,13 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <emoji-dialog
+        v-model="emojiDialog"
+        :emoji-converter="emojiConverter"
+        :mark-repo="markRepo"
+        :selected-tweet-id="selectedTweetId"
+        @added-emoji-mark="onEmojiMarkAdded"
+      ></emoji-dialog>
     </v-container>
   </v-main>
 </template>
@@ -112,12 +132,17 @@ import { Room } from '~/models/room'
 import FetchUser from '~/mixins/FetchUser.vue'
 import { User } from '~/models/user'
 import { convertEmoji, formatToHtml } from '~/libs/format-string'
+import { MarkRepository } from '~/repository/mark'
+import { MarkApi } from '~/apis/mark'
+import EmojiDialog from '~/components/emoji-dialog.vue'
+import { Mark } from '~/models/mark'
 
 const PAGE_SIZE = 10
 
 @Component({
   layout: 'chat',
   components: {
+    EmojiDialog,
     InfiniteLoading,
   },
 })
@@ -132,6 +157,8 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
   infiniteId = +new Date() // Date as timestamp
   selectedTweet: Tweet | null = null
   emojiConverter: Emoji = new EmojiConvertor()
+  emojiDialog: boolean = false
+  selectedTweetId: string | null = null
 
   get roomId(): string {
     return this.$route.params.id
@@ -142,6 +169,10 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
       TweetRepository.create(TweetApi.create(this.$axios)),
       this.roomId,
     )
+  }
+
+  get markRepo(): MarkRepository {
+    return MarkRepository.create(MarkApi.create(this.$axios))
   }
 
   get hasMessage(): boolean {
@@ -173,6 +204,7 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
         message: msg,
         userId: this.user!.id,
         roomId: this.roomId,
+        marks: [],
       })
       .then((tweet) => {
         this.items.push(tweet)
@@ -223,6 +255,27 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
     this.send()
   }
 
+  onEmojiMarkAdded(newMark: Mark) {
+    this.emojiDialog = false
+    const tweetIdx = this.items.findIndex(elem => elem.id === this.selectedTweetId)
+    if (tweetIdx >= 0) {
+      this.items[tweetIdx].marks.push(newMark)
+    }
+    this.selectedTweetId = null
+  }
+
+  deleteMark(id: string, tweetId: string) {
+    this.markRepo.delete(id).then(() => {
+      const tweetIdx = this.items.findIndex(elem => elem.id === tweetId)
+      if (tweetIdx === -1) return
+
+      const markIdx = this.items[tweetIdx].marks.findIndex(elem => elem.id === id)
+      if (markIdx === -1) return
+
+      this.items[tweetIdx].marks.splice(markIdx, 1)
+    })
+  }
+
   clearMessage() {
     this.message = ''
   }
@@ -239,8 +292,17 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
     this.resetInfiniteLoading()
   }
 
+  openEmojiDialog(id: string) {
+    this.selectedTweetId = id
+    this.emojiDialog = true
+  }
+
   formatToHtmlStr(s: string): string {
     return formatToHtml(convertEmoji(s, this.emojiConverter))
+  }
+
+  toEmojiIcon(shortName: string): string {
+    return convertEmoji(shortName, this.emojiConverter)
   }
 
   resetInfiniteLoading() {
@@ -259,6 +321,10 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
   .bottom-space {
     height: 100px;
   }
+
+  .tip-width {
+    max-width: 100px;
+  }
 }
 
 /* For iPad in landscape */
@@ -266,11 +332,19 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
   .bottom-space {
     height: 100px;
   }
+
+  .tip-width {
+    max-width: 100px;
+  }
 }
 
 @media screen and (min-width: 821px) and (min-height: 821px), screen and (min-width: 1181px) {
   .bottom-space {
     height: 10px;
+  }
+
+  .tip-width {
+    max-width: 200px;
   }
 }
 
@@ -284,6 +358,10 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
 .chat-history {
   flex: 1;
   overflow-y: scroll;
+}
+
+.emoji-icon {
+  font-size: 1.2rem;
 }
 
 .input-area {

@@ -1,6 +1,7 @@
 import { PaginatedCrudRepositoryBase } from '~/repository/base'
 import { TweetApi, TweetDto } from '~/apis/tweet'
 import { Tweet } from '~/models/tweet'
+import { convertDtoToMark, convertMarkToDto } from '~/repository/mark'
 
 export class TweetRepository extends PaginatedCrudRepositoryBase<
   Tweet,
@@ -23,6 +24,7 @@ const convertDtoToTweet = (raw: TweetDto): Tweet => {
     message: raw.message,
     userId: raw.user,
     roomId: raw.room,
+    marks: raw.marks.map(convertDtoToMark),
   }
 }
 
@@ -34,5 +36,6 @@ const convertTweetToDto = (item: Tweet): TweetDto => {
     message: item.message,
     user: item.userId,
     room: item.roomId,
+    marks: item.marks.map(convertMarkToDto),
   }
 }
