@@ -12,7 +12,8 @@
         <div v-for="(item, idx) in items" :key="idx">
           <v-hover v-slot="{ hover }">
             <v-card
-              :elevation="hover ? 6 : 0"
+              :elevation="0"
+              class="focused-tweet"
             >
               <v-card-text class="py-1">
                 <p class="my-0" v-html="formatToHtmlStr(item.message)"></p>
@@ -22,6 +23,7 @@
                   v-for="(mark, mIdx) in item.marks"
                   :key="mIdx"
                   class="emoji-icon"
+                  depressed
                   fab
                   x-small
                   @click.stop="deleteMark(mark.id, item.id)"
@@ -358,6 +360,10 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
 .chat-history {
   flex: 1;
   overflow-y: scroll;
+}
+
+.focused-tweet:hover {
+  background-color: #f3f3f3;
 }
 
 .emoji-icon {
