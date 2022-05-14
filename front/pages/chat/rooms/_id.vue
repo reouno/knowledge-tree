@@ -16,6 +16,7 @@
               class="focused-tweet"
             >
               <v-card-text class="py-1">
+                <!-- eslint-disable-next-line vue/no-v-html -->
                 <p class="my-0" v-html="formatToHtmlStr(item.message)"></p>
               </v-card-text>
               <v-col class="ma-0 pa-0 tip-width">
