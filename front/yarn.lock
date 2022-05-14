@@ -1967,6 +1967,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/emoji-js@^3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@types/emoji-js/-/emoji-js-3.5.0.tgz#5d080111efaa929743968d3baaaf98603d1f07e9"
+  integrity sha512-6dWe6Hyo7PR5tNEvWNAtnOeiQTLFoyPEofUc/waVJC1fkQqvJPw1j30szbzfJRehyg1/Mw82p4w714x0ImF9ZA==
+
 "@types/eslint@^7.28.2":
   version "7.29.0"
   resolved "https://registry.yarnpkg.com/@types/eslint/-/eslint-7.29.0.tgz#e56ddc8e542815272720bb0b4ccc2aff9c3e1c78"
@@ -4813,6 +4818,18 @@ emittery@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.8.1.tgz#bb23cc86d03b30aa75a7f734819dee2e1ba70860"
   integrity sha512-uDfvUjVrfGJJhymx/kz6prltenw1u7WrCg1oa94zYY8xxVpLLUu045LAT0dhDZdXG58/EpPL/5kA180fQ/qudg==
+
+emoji-datasource@7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-7.0.2.tgz#e32b9002c594334ea9ec74e11f21b20c5adcb74d"
+  integrity sha512-F5TTUSktTIfbjHIlaz8tjsQ8EAD0UpJtj1i5O13jQARWTddtFgam3nE1W5WgSQoqU/cuTnF1H9tK/wlCOyzfiA==
+
+emoji-js@^3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/emoji-js/-/emoji-js-3.7.0.tgz#60c479803ebe4cc4bed68ae7c1ef081a5ad31c5b"
+  integrity sha512-YNJCF8DOYI1AZnkSIcJbmIN6rtXtSv5DObqzvHuGAP8VLQc15MMN+DG9rQVSfHPXGFkFub9pGvbiO4FNz5+sjg==
+  dependencies:
+    emoji-datasource "7.0.2"
 
 emoji-regex@^8.0.0:
   version "8.0.0"

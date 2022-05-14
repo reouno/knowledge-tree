@@ -15,7 +15,7 @@
               :elevation="hover ? 6 : 0"
             >
               <v-card-text class="py-1">
-                <p class="my-0" v-html="formatToHtml(item.message)"></p>
+                <p class="my-0" v-html="formatToHtmlStr(item.message)"></p>
               </v-card-text>
               <v-col class="ma-0 pa-0 text-right">
                 <v-chip
@@ -103,6 +103,7 @@
 import { Component } from 'nuxt-property-decorator'
 import InfiniteLoading from 'vue-infinite-loading'
 import { Mixins } from 'vue-mixin-decorator'
+import Emoji, { EmojiConvertor } from 'emoji-js'
 import { TweetRepository } from '~/repository/tweet'
 import { TweetApi } from '~/apis/tweet'
 import { RoomTweetRepository } from '~/repository/room-tweet'
@@ -110,6 +111,7 @@ import { Tweet } from '~/models/tweet'
 import { Room } from '~/models/room'
 import FetchUser from '~/mixins/FetchUser.vue'
 import { User } from '~/models/user'
+import { convertEmoji, formatToHtml } from '~/libs/format-string'
 
 const PAGE_SIZE = 10
 
@@ -129,6 +131,7 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
   deleteDialog: boolean = false
   infiniteId = +new Date() // Date as timestamp
   selectedTweet: Tweet | null = null
+  emojiConverter: Emoji = new EmojiConvertor()
 
   get roomId(): string {
     return this.$route.params.id
@@ -236,19 +239,8 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
     this.resetInfiniteLoading()
   }
 
-  formatToHtml(s: string): string {
-    return s
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/\n{3,}/g, '\n\n') // trim successive \n in 2 times
-      .replace(/\n/g, '<br />')
-      .replace(
-        /(https?:\/\/[-_.!~*'()a-zA-Z0-9/?:@&=+$,%#\u3000-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+)/g,
-        '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>',
-      ) // convert URL to a tag link
-      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>') // markdown strong
-      .replace(/\*([^*]+)\*/g, '<em>$1</em>') // markdown italic
+  formatToHtmlStr(s: string): string {
+    return formatToHtml(convertEmoji(s, this.emojiConverter))
   }
 
   resetInfiniteLoading() {
