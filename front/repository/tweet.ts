@@ -24,7 +24,7 @@ const convertDtoToTweet = (raw: TweetDto): Tweet => {
     message: raw.message,
     userId: raw.user,
     roomId: raw.room,
-    marks: raw.marks.map(convertDtoToMark),
+    marks: raw.marks!.map(convertDtoToMark),
   }
 }
 
@@ -36,6 +36,7 @@ const convertTweetToDto = (item: Tweet): TweetDto => {
     message: item.message,
     user: item.userId,
     room: item.roomId,
-    marks: item.marks.map(convertMarkToDto),
+    marks:
+      item.marks.length !== 0 ? item.marks.map(convertMarkToDto) : undefined,
   }
 }

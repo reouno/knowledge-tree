@@ -7,7 +7,7 @@ export interface TweetDto extends EntityDto {
   message: string
   user: string
   room: string
-  marks: MarkDto[]
+  marks?: MarkDto[]
 }
 
 export class TweetApi extends PaginatedCrudApiBase<TweetDto> {
