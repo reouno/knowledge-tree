@@ -20,3 +20,6 @@ db.sqlite3
 # SSL Certificates
 app.conf
 nginx/data/certbot/
+
+# Backups
+backup/
