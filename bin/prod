@@ -3,4 +3,4 @@ set -eux
 
 # Run right under the project root directory
 
-docker-compose -f docker-compose.prod.yml --env-file ./api_server/.env.prod "$@"
+docker compose -f docker-compose.prod.yml --env-file ./api_server/.env.prod "$@"
