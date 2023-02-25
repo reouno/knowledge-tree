@@ -4,13 +4,14 @@
       <v-card>
         <v-card-title>Sign In</v-card-title>
         <v-card-text>
-          <v-text-field v-model="email" label="email" required></v-text-field>
+          <v-text-field v-model="email" label="email" autocomplete required></v-text-field>
           <v-text-field
             v-model="password"
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             :type="show1 ? 'text' : 'password'"
             label="Password"
             name="input-10-1"
+            autocomplete
             @click:append="show1 = !show1"
             @keydown.enter.exact="login"
           ></v-text-field>

@@ -21,6 +21,9 @@ DATABASES = {
     }
 }
 
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 week in seconds
+SESSION_SAVE_EVERY_REQUEST = True
+
 TIME_ZONE = os.environ.get('TIMEZONE', default='Asia/Tokyo')
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'

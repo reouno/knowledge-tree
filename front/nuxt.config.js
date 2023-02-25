@@ -52,6 +52,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    'nuxt-healthcheck',
   ],
 
   auth: {
@@ -144,6 +145,14 @@ export default {
           success: colors.green.accent3,
         },
       },
+    },
+  },
+
+  healthcheck: {
+    path: '/front-health-check',
+    contentType: 'application/json',
+    healthy: () => {
+      return JSON.stringify('Hi!')
     },
   },
 

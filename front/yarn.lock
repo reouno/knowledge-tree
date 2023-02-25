@@ -8260,6 +8260,11 @@ num2fraction@^1.2.2:
   resolved "https://registry.yarnpkg.com/num2fraction/-/num2fraction-1.2.2.tgz#6f682b6a027a4e9ddfa4564cd2589d1d4e669ede"
   integrity sha1-b2gragJ6Tp3fpFZM0lidHU5mnt4=
 
+nuxt-healthcheck@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/nuxt-healthcheck/-/nuxt-healthcheck-1.0.1.tgz#0994a58c9e09c4bfa797ef9d51e22e5db0327a59"
+  integrity sha512-Eon6jj9MzHsbXXzU8x14j/sBHjs8zlZCNbWJ5D/BiK2OGYoSbPgSkhhkcvkWKIAcoZJ2f8K+BRoOOFt//rqhPw==
+
 nuxt-property-decorator@^2.9.1:
   version "2.9.1"
   resolved "https://registry.yarnpkg.com/nuxt-property-decorator/-/nuxt-property-decorator-2.9.1.tgz#60fd87b64d85519b091374c7ea4c0ce1979f6afa"
@@ -11649,10 +11654,15 @@ vuetify-loader@^1.7.3:
     file-loader "^6.2.0"
     loader-utils "^2.0.0"
 
-vuetify@^2.6, vuetify@^2.6.1:
+vuetify@^2.6:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.6.3.tgz#b33ede2da958a40c6ced0ad1f4eda737984b3967"
   integrity sha512-Zfiz2DZnp1DvxqGaSCGqGjv4mPNAurJJ5Xwy7bzNzIySGLlRdlO8UH6aNWnSgfaAsLP3voxadSGDm6tKM8Ys7w==
+
+vuetify@^2.6.1:
+  version "2.6.14"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.6.14.tgz#a5bf662de938efe0450ac59776b04f760f5407d2"
+  integrity sha512-nr6wU3uTzhhEPssH23cW0Ee/hCrayp7cjl3nNjM2OmNwiJlV91tZiL1VO3597SqZyjh1xIa+m9J2rpKTSdIlrA==
 
 vuex-class@^0.3.2:
   version "0.3.2"

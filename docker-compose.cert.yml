@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: knowledge-tree-nginx-prd
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/data/nginx:/etc/nginx/conf.d/:ro
+      # - ./nginx/data/certbot/conf:/etc/letsencrypt:ro # uncomment after dry-run
+      - ./nginx/data/certbot/www:/var/www/certbot/:ro
+    restart: always
+  certbot:
+    image: certbot/certbot
+    volumes:
+      # - ./nginx/data/certbot/conf:/etc/letsencrypt:rw # uncomment after dry-run
+      - ./nginx/data/certbot/www:/var/www/certbot/:rw

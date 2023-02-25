@@ -5,7 +5,7 @@
 
 ## Recommended
 It's useful at development.
-- python 3.9.9
+- python 3.9.16
 - pip
 - node v14.17.0
 - yarn
@@ -13,44 +13,59 @@ It's useful at development.
 # Run for the production
 
 ## 0. Prepare for SSL
+
+The following procedure is based on [this site](https://mindsers.blog/post/https-using-nginx-certbot-docker/).
+
+```shell
+cp nginx/data/nginx/app.conf.cert.ini nginx/data/nginx/app.conf
+```
+
+Replace `your.domain` with your actual domain in `nginx/data/nginx/app.conf`.
+
+Run:
+```shell
+# start docker compose
+bin/cert up
+
+# Run in another shell
+# Before run, REPLACE `<your.domain>` with your actual domain in the following command.
+bin/cert run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ --dry-run -d <your.domain>
+```
+
+You should see `The dry run was successful.`.
+
+After that, uncomment two lines in `docker-compose.cert.yml` to enable certbot create certificate and save in letsencrypt directory.
+
+Then, run the following commands:
+```shell
+# In the first shell
+bin/cert up
+
+# In the second shell
+# Before run, REPLACE `<your.domain>` with your actual domain in the following command.
+bin/cert run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d <your.domain>
+```
+
+After successfully receiving certificate, replace app.conf with the one for running production app.
 ```shell
 cp nginx/data/nginx/app.conf.ini nginx/data/nginx/app.conf
 ```
-After that, change <your.domain> to your domain.
 
-Create certificate following [this site](https://mindsers.blog/post/https-using-nginx-certbot-docker/).
+Replace `your.domain` with your actual domain in `nginx/data/nginx/app.conf` again.
 
 
 ## 1. Prepare .env
 
 ### `api_server/.env`
-Create `<prj_root>/api_server/.env.prod`.
-Example of environment variables are followings.
-```dotenv
-DJANGO_SETTINGS_MODULE=api_server.settings.prod
-DJANGO_ENV=prod
-DEBUG=0
-SECRET_KEY=gkj36hk34543gi54
-DJANGO_ALLOWED_HOSTS=https://your-host1.com,https://your-host2.com
-CSRF_TRUSTED_ORIGINS=https://your-host1.com,https://your-host2.com
-SQL_ENGINE=django.db.backends.postgresql
-SQL_DATABASE=db_name
-SQL_USER=db_user_name
-SQL_PASSWORD=db_password
-SQL_HOST=db
-SQL_PORT=5432
-DATABASE=postgres
-TIMEZONE=Asia/Tokyo
-DJANGO_LOG_LEVEL=INFO
+Create `<prj_root>/api_server/.env.prod` by copying `<prj_root>/api_server/.env.org`.
+```shell
+cp api_server/.env.org api_server/.env.prod
 ```
 
 ### `front/.env`
-Create `<prj_root>/front/.env.prod`.
-Example of environment variables are followings.
-```dotenv
-HOST=0.0.0.0
-PORT=3000
-NUXT_ENV_BASE_URL=https://hour-domain.com
+Create `<prj_root>/front/.env.prod` by copying `<prj_root>/front/.env.prod`.
+```shell
+cp front/.env.org front/.env.prod
 ```
 
 ## 2. Setup

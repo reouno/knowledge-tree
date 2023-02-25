@@ -12,7 +12,7 @@
     "lint:prettier": "prettier --check .",
     "lint": "yarn lint:js && yarn lint:style && yarn lint:prettier",
     "lintfix": "prettier --write --list-different . && yarn lint:js --fix && yarn lint:style --fix",
-    "prepare": "husky install",
+    "prepare": "cd .. && husky install front/.husky",
     "test": "jest"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "emoji-js": "^3.7.0",
     "js-cookie": "^3.0.1",
     "nuxt": "^2.15.8",
+    "nuxt-healthcheck": "^1.0.1",
     "nuxt-property-decorator": "^2.9.1",
     "v-scroll-lock": "^1.3.1",
     "vue": "^2.6.14",

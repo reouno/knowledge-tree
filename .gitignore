@@ -4,6 +4,7 @@
 
 # python
 .venv
+.python-version
 
 # Django
 *.log
