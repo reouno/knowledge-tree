@@ -5,7 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/api_server/api_server.iml" filepath="$PROJECT_DIR$/api_server/api_server.iml" />
       <module fileurl="file://$PROJECT_DIR$/bin/bin.iml" filepath="$PROJECT_DIR$/bin/bin.iml" />
       <module fileurl="file://$PROJECT_DIR$/front/front.iml" filepath="$PROJECT_DIR$/front/front.iml" />
+      <module fileurl="file://$PROJECT_DIR$/models/models.iml" filepath="$PROJECT_DIR$/models/models.iml" />
       <module fileurl="file://$PROJECT_DIR$/nginx/nginx.iml" filepath="$PROJECT_DIR$/nginx/nginx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/redis-data/redis-data.iml" filepath="$PROJECT_DIR$/redis-data/redis-data.iml" />
     </modules>
   </component>
 </project>

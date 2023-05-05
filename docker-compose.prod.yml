@@ -8,7 +8,7 @@ x-logging: &default-logging
     compress: "true"
 
 x-health: &default-healthcheck
-  interval: 1m
+  interval: 10m
   timeout: 30s
   retries: 2
 
@@ -81,6 +81,7 @@ services:
       - "443:443"
     depends_on:
       - api
+      - qml
     volumes:
       - ./nginx/data/nginx:/etc/nginx/conf.d/:ro
       - ./nginx/data/certbot/conf:/etc/letsencrypt:ro
@@ -104,6 +105,36 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     logging:
       <<: *default-logging
+  # Used only by QuickML app
+  redis:
+    image: "redis:latest"
+    volumes:
+      - "./redis-data:/data"
+    expose:
+      - 6379
+  # Used only by QuickML app
+  qml:
+    image: quick-ml
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1 # Use only 1080 Ti
+              capabilities: [ gpu ]
+    command: uvicorn main:app --host 0.0.0.0 --port 8001
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - GCP_SA_JSON=${GCP_SA_JSON}
+      - GCS_BUCKET=${GCS_BUCKET}
+    expose:
+      - 8001
+    volumes:
+      - "./tmp_workspace:/tmp_workspace"
+      - ./models:/models
+    depends_on:
+      - redis
 
 
 volumes:
