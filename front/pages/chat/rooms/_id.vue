@@ -11,10 +11,7 @@
         </client-only>
         <div v-for="(item, idx) in items" :key="idx">
           <v-hover v-slot="{ hover }">
-            <v-card
-              :elevation="0"
-              class="focused-tweet"
-            >
+            <v-card :elevation="0" class="focused-tweet">
               <v-card-text class="py-1">
                 <!-- eslint-disable-next-line vue/no-v-html -->
                 <p class="my-0" v-html="formatToHtmlStr(item.message)"></p>
@@ -28,19 +25,26 @@
                   fab
                   x-small
                   @click.stop="deleteMark(mark.id, item.id)"
-                >{{ toEmojiIcon(mark.label) }}
+                  >{{ toEmojiIcon(mark.label) }}
                 </v-btn>
-                <v-chip
-                  v-if="hover"
-                  class="ml-4"
-                >
-                  <v-btn class="mr-1" fab x-small @click.stop="openEmojiDialog(item.id)">
+                <v-chip v-if="hover" class="ml-4">
+                  <v-btn
+                    class="mr-1"
+                    fab
+                    x-small
+                    @click.stop="openEmojiDialog(item.id)"
+                  >
                     <v-icon>mdi-emoticon-happy-outline</v-icon>
                   </v-btn>
                   <v-btn class="mr-1" disabled fab x-small>
                     <v-icon>mdi-pencil-outline</v-icon>
                   </v-btn>
-                  <v-btn class="ma-0" fab x-small @click.stop="openDeleteDialog(item)">
+                  <v-btn
+                    class="ma-0"
+                    fab
+                    x-small
+                    @click.stop="openDeleteDialog(item)"
+                  >
                     <v-icon>mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </v-chip>
@@ -67,8 +71,12 @@
             </v-col>
             <v-col align-self="end" cols="1">
               <v-btn
-                :disabled="!hasMessage" class="px-1 small-width" color="primary" small
-                @click="send">
+                :disabled="!hasMessage"
+                class="px-1 small-width"
+                color="primary"
+                small
+                @click="send"
+              >
                 <v-icon>mdi-send</v-icon>
               </v-btn>
             </v-col>
@@ -76,17 +84,14 @@
         </v-container>
       </v-card>
       <div class="bottom-space"><!-- Bottom space for iOS --></div>
-      <v-dialog
-        v-model="deleteDialog"
-        width="500"
-      >
+      <v-dialog v-model="deleteDialog" width="500">
         <v-card v-if="selectedTweet">
           <v-card-title class="text-h5 grey lighten-2">
             Delete a message
           </v-card-title>
 
           <v-card-text>
-            Are you sure you want to delete the message?<br/>
+            Are you sure you want to delete the message?<br />
             {{ selectedTweet.message.slice(0, 10) }}...
           </v-card-text>
 
@@ -94,18 +99,10 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              color="secondary"
-              text
-              @click="deleteDialog = false"
-            >
+            <v-btn color="secondary" text @click="deleteDialog = false">
               Cancel
             </v-btn>
-            <v-btn
-              color="error"
-              text
-              @click="onClickDelete(selectedTweet.id)"
-            >
+            <v-btn color="error" text @click="onClickDelete(selectedTweet.id)">
               Delete
             </v-btn>
           </v-card-actions>
@@ -170,7 +167,7 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
   get tweetRepo(): RoomTweetRepository {
     return new RoomTweetRepository(
       TweetRepository.create(TweetApi.create(this.$axios)),
-      this.roomId,
+      this.roomId
     )
   }
 
@@ -251,16 +248,19 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
   }
 
   keyUpEnter(e: any) {
-    if (this.keyDownCode === 229) { // 229 means character conversion
-      return
+    if (this.keyDownCode === 13) {
+      // 13 means return
+      e.preventDefault()
+      this.send()
     }
-    e.preventDefault()
-    this.send()
+    this.keyDownCode = 0
   }
 
   onEmojiMarkAdded(newMark: Mark) {
     this.emojiDialog = false
-    const tweetIdx = this.items.findIndex(elem => elem.id === this.selectedTweetId)
+    const tweetIdx = this.items.findIndex(
+      (elem) => elem.id === this.selectedTweetId
+    )
     if (tweetIdx >= 0) {
       this.items[tweetIdx].marks.push(newMark)
     }
@@ -269,10 +269,12 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
 
   deleteMark(id: string, tweetId: string) {
     this.markRepo.delete(id).then(() => {
-      const tweetIdx = this.items.findIndex(elem => elem.id === tweetId)
+      const tweetIdx = this.items.findIndex((elem) => elem.id === tweetId)
       if (tweetIdx === -1) return
 
-      const markIdx = this.items[tweetIdx].marks.findIndex(elem => elem.id === id)
+      const markIdx = this.items[tweetIdx].marks.findIndex(
+        (elem) => elem.id === id
+      )
       if (markIdx === -1) return
 
       this.items[tweetIdx].marks.splice(markIdx, 1)
@@ -341,7 +343,8 @@ export default class ChatRoom extends Mixins<FetchUser>(FetchUser) {
   }
 }
 
-@media screen and (min-width: 821px) and (min-height: 821px), screen and (min-width: 1181px) {
+@media screen and (min-width: 821px) and (min-height: 821px),
+  screen and (min-width: 1181px) {
   .bottom-space {
     height: 10px;
   }
