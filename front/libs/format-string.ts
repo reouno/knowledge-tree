@@ -5,6 +5,7 @@ export const convertEmoji = (
   converter: Emoji | undefined = undefined
 ): string => {
   const emo = converter || new EmojiConvertor()
+  emo.replace_mode = 'unified'
   return emo.replace_colons(s)
 }
 
