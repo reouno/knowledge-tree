@@ -1,0 +1,10 @@
+.md-code-block {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  padding: 0.2em 0.4em;
+}
+
+.md-code-block code {
+  background-color: unset !important;
+  padding: unset !important;
+}

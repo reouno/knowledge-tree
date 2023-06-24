@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts">
-import { EmojiConvertor } from 'emoji-js'
 import { Component, Vue } from 'nuxt-property-decorator'
+import { convertEmoji } from '~/libs/format-string'
 
 @Component({
   layout: 'chat',
@@ -22,10 +22,7 @@ export default class Chat extends Vue {
   }
 
   get emojis(): string {
-    const emo = new EmojiConvertor()
-    return emo.replace_colons(
-      ':tada:'
-    )
+    return convertEmoji(':tada:')
   }
 }
 </script>

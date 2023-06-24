@@ -22,4 +22,9 @@ export const formatToHtml = (s: string): string => {
     ) // convert URL to a tag link
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>') // markdown strong
     .replace(/\*([^*]+)\*/g, '<em>$1</em>') // markdown italic
+    .replace(
+      /```(<br \/>)?([^`]+)```/g,
+      '<div class="md-code-block"><pre><code>$2</code></pre></div>'
+    ) // markdown code block
+    .replace(/`([^`]+)`/g, '<code>$1</code>') // markdown inline code
 }
